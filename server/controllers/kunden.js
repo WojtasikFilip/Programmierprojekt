@@ -50,26 +50,20 @@ const addKunde = asyncHandler(async (req, res) => {
 
 const addKundeKonto = asyncHandler(async (req, res) => {
   const kundennummer = kundenFunctions.getRandomNumber(100000000, 999999999);
-  const rows = await kundenFunctions.getKunde(kundennummer);
-  if (rows.length > 0) {
-    res.status(404).send(`Kunde ${kundennummer} already exists.`);
-  } else {
+  const kartennummer = kundenFunctions.getRandomNumber(100000000, 999999999);
+
+  const kundenRows = await kundenFunctions.getKunde(kundennummer);
+  const kontenRows = await kontoFunctions.getKonto(kartennummer);
+
+  if (kundenRows.length > 0 && kontenRows.length > 0) {
+    res.status(404).send('Kunde or Konto already exists.');
+  }
+  if (kundennummer) {
     await kundenFunctions.addKunde(req.body, kundennummer);
-    res.status(200).send(`Kunde ${kundennummer} added.`);
-  }
-  if (kundennummer !== '') {
-    const kartennummer = kontoFunctions.getRandomNumber(100000000, 999999999);
-    const kontenRows = await kontoFunctions.getKonto(kartennummer);
-    console.log(kontenRows);
-    if (kontenRows.length > 0) {
-      res.status(404).send(`Konto ${kartennummer} already exists.`);
-    } else {
-      await kontoFunctions.addKonto(req.body, kartennummer, kundennummer);
-      res.status(200).send(`Konto ${kartennummer} added.`);
-    }
-  }
-  if (!kundennummer) {
-    res.status(404).send('Kundennummer not defined.');
+    await kontoFunctions.addKonto(req.body, kartennummer, kundennummer);
+    res.status(200).send(`Kunde ${kundennummer} and Konto ${kartennummer} were added.`);
+  } else {
+    res.status(404).send('Unable to add Kunde and Konto');
   }
 });
 

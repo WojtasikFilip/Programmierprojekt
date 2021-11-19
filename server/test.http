@@ -12,8 +12,7 @@ Content-Type: application/json
 {
     "kontostand":130000
 }
-###
-DELETE http://localhost:3000/bank/konten/7615018
+
 ###
 PATCH http://localhost:3000/bank/kunden/247067429
 Content-Type: application/json
@@ -23,6 +22,8 @@ Content-Type: application/json
 }
 ###
 DELETE http://localhost:3000/bank/kunden/849291198
+###
+DELETE http://localhost:3000/bank/konten/7615018
 ###
 POST http://localhost:3000/bank/kunden
 Content-type: application/json

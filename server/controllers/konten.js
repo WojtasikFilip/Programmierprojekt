@@ -36,19 +36,6 @@ const deleteKonto = asyncHandler(async (req, res) => {
   }
 });
 
-// const addKonto = asyncHandler(async (req, res) => {
-//   const kartennummer = kontoFunctions.getRandomNumber(100000000, 999999999);
-//   const kundennummer = kundenController.addKunde;
-//   console.log(kundennummer);
-//   const rows = await kontoFunctions.getKonto(kartennummer);
-//   if (rows.length > 0) {
-//     res.status(404).send(`Konto ${kartennummer} already exists.`);
-//   } else {
-//     await kontoFunctions.addKonto(req.body, kartennummer, kundennummer);
-//     res.status(200).send(`Konto ${kartennummer} added.`);
-//   }
-// });
-
 module.exports = {
   getKonten,
   getKonto,

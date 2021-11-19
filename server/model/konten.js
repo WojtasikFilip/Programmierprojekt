@@ -22,10 +22,6 @@ async function deleteKonto(kartennummer) {
   await db.query('DELETE from konten where kartennummer = $1', [kartennummer]);
 }
 
-function getRandomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
-}
-
 async function addKonto(k, kartennummer, kundennummer) {
   await db.query(
     'INSERT into konten(kartennummer,iban,kontostand,konto_seit,fk_kundennummer) values($1,$2,$3,$4,$5)',
@@ -33,4 +29,4 @@ async function addKonto(k, kartennummer, kundennummer) {
   );
 }
 
-module.exports = { getKonten, getKonto, patchKonten, deleteKonto, getRandomNumber, addKonto };
+module.exports = { getKonten, getKonto, patchKonten, deleteKonto, addKonto };
