@@ -1,0 +1,49 @@
+GET http://localhost:3000/bank/kunden
+###
+GET http://localhost:3000/bank/konten
+###
+GET http://localhost:3000/bank/kunden/247067429
+###
+GET http://localhost:3000/bank/konten/3097268561
+###
+PATCH http://localhost:3000/bank/konten/3097268561
+Content-Type: application/json
+
+{
+    "kontostand":130000
+}
+###
+DELETE http://localhost:3000/bank/konten/7615018
+###
+PATCH http://localhost:3000/bank/kunden/247067429
+Content-Type: application/json
+
+{
+    "Nachname":"Testi"
+}
+###
+DELETE http://localhost:3000/bank/kunden/849291198
+###
+POST http://localhost:3000/bank/kunden
+Content-type: application/json
+
+{
+    "geburtsdatum":"1999-01-21",
+    "adresse":"Die gute Adresse",
+    "vorname":"Felipe",
+    "nachname":"Wojtasik"
+}
+###
+POST http://localhost:3000/bank/konten
+Content-type: application/json
+
+{
+    "iban":"AT74 7268 8051 8727 6585 9624",
+    "kontostand":0.00,
+    "konto_seit":"2000-01-21",
+    "geburtsdatum":"1999-01-21",
+    "adresse":"Die gute Adresse",
+    "vorname":"Felipe",
+    "nachname":"Wojtasik"
+}
+
