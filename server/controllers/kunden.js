@@ -28,6 +28,7 @@ const patchKunde = asyncHandler(async (req, res) => {
 
 const deleteKunde = asyncHandler(async (req, res) => {
   const { kundennummer } = req.params;
+  console.log(req.params);
   const rows = await kundenFunctions.getKunde(kundennummer);
   if (rows.length === 0) {
     res.status(404).send(`Kunde ${kundennummer} does not exist.`);

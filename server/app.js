@@ -18,8 +18,8 @@ app.use(helmet());
 
 app.use(express.json());
 
-app.use('/bank/kunden', kundenRoutes);
-app.use('/bank/konten', kontenRoutes);
+app.use('/kunden', kundenRoutes);
+app.use('/konten', kontenRoutes);
 
 app.use(errorHandler);
 app.use(notFound);
