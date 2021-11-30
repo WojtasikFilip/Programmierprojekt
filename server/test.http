@@ -2,9 +2,11 @@ GET http://localhost:3000/kunden
 ###
 GET http://localhost:3000/konten
 ###
-GET http://localhost:3000/kunden/247067429
+GET http://localhost:3000/kunden/745959412
 ###
-GET http://localhost:3000/konten/3097268561
+GET http://localhost:3000/kunden/265759500/konten
+###
+GET http://localhost:3000/konten/7366135559 
 ###
 PATCH http://localhost:3000/konten/3097268561
 Content-Type: application/json
@@ -35,7 +37,7 @@ Content-type: application/json
     "nachname":"Wojtasik"
 }
 ###
-POST http://localhost:3000/konten
+POST http://localhost:3000/konten/kundeKonto
 Content-type: application/json
 
 {
@@ -47,4 +49,12 @@ Content-type: application/json
     "vorname":"Felipe",
     "nachname":"Wojtasik"
 }
+###
+POST http://localhost:3000/konten
+Content-type: application/json
 
+{
+    "iban":"AT74 7268 8051 8727 6585 9624",
+    "kontostand":0.00,
+    "konto_seit":"2000-01-21"
+}

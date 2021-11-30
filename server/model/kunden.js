@@ -10,6 +10,14 @@ async function getKunde(kundennummer) {
   return rows;
 }
 
+async function getKundenKonten(kundennummer) {
+  const { rows } = await db.query(
+    'select konten.* from konten join kunden k on k.kundennummer = konten.fk_kundennummer where k.kundennummer = $1',
+    [kundennummer],
+  );
+  return rows;
+}
+
 async function patchKunde(kundennummer, data) {
   const props = [];
   // eslint-disable-next-line guard-for-in
@@ -33,4 +41,4 @@ async function addKunde(k, kundennummer) {
   );
 }
 
-module.exports = { getKunden, getKunde, patchKunde, deleteKunde, addKunde, getRandomNumber };
+module.exports = { getKunden, getKunde, getKundenKonten, patchKunde, deleteKunde, addKunde, getRandomNumber };

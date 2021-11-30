@@ -16,6 +16,16 @@ const getKunde = asyncHandler(async (req, res) => {
   }
 });
 
+const getKundenKonten = asyncHandler(async (req, res) => {
+  const { kundennummer } = req.params;
+  const rows = await kundenFunctions.getKunde(kundennummer);
+  if (rows.length === 0) {
+    res.status(404).send(`Kunde ${kundennummer} does not exist.`);
+  } else {
+    res.status(200).json(await kundenFunctions.getKundenKonten(req.params.kundennummer));
+  }
+});
+
 const patchKunde = asyncHandler(async (req, res) => {
   const { kundennummer } = req.params;
   const rows = await kundenFunctions.getKunde(kundennummer);
@@ -51,7 +61,7 @@ const addKunde = asyncHandler(async (req, res) => {
 
 const addKundeKonto = asyncHandler(async (req, res) => {
   const kundennummer = kundenFunctions.getRandomNumber(100000000, 999999999);
-  const kartennummer = kundenFunctions.getRandomNumber(100000000, 999999999);
+  const kartennummer = kundenFunctions.getRandomNumber(1000000000, 9999999999);
 
   const kundenRows = await kundenFunctions.getKunde(kundennummer);
   const kontenRows = await kontoFunctions.getKonto(kartennummer);
@@ -68,4 +78,4 @@ const addKundeKonto = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getKunde, getKunden, deleteKunde, patchKunde, addKunde, addKundeKonto };
+module.exports = { getKunde, getKunden, getKundenKonten, deleteKunde, patchKunde, addKunde, addKundeKonto };

@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { getKonten, getKonto, patchKonto, deleteKonto } = require('../controllers/konten.js');
+const { getKonten, getKonto, patchKonto, deleteKonto, addKonto } = require('../controllers/konten.js');
 
 const { addKundeKonto } = require('../controllers/kunden');
 
@@ -13,6 +13,7 @@ router.patch('/:kartennummer', patchKonto);
 
 router.delete('/:kartennummer', deleteKonto);
 
-router.post('/', addKundeKonto);
+router.post('/', addKonto);
+router.post('/kundeKonto', addKundeKonto);
 
 module.exports = router;
