@@ -4,15 +4,15 @@ GET http://localhost:3000/konten
 ###
 GET http://localhost:3000/kunden/745959412
 ###
-GET http://localhost:3000/kunden/265759500/konten
+GET http://localhost:3000/kunden/265000437/konten
 ###
-GET http://localhost:3000/konten/7366135559 
+GET http://localhost:3000/konten/3097268561 
 ###
 PATCH http://localhost:3000/konten/3097268561
 Content-Type: application/json
 
 {
-    "kontostand":130000
+    "kontostand":13222
 }
 
 ###
@@ -25,25 +25,12 @@ Content-Type: application/json
 ###
 DELETE http://localhost:3000/kunden/849291198
 ###
-DELETE http://localhost:3000/konten/7615018
+DELETE http://localhost:3000/konten/9128318282
 ###
 POST http://localhost:3000/kunden
 Content-type: application/json
 
 {
-    "geburtsdatum":"1999-01-21",
-    "adresse":"Die gute Adresse",
-    "vorname":"Felipe",
-    "nachname":"Wojtasik"
-}
-###
-POST http://localhost:3000/konten/kundeKonto
-Content-type: application/json
-
-{
-    "iban":"AT74 7268 8051 8727 6585 9624",
-    "kontostand":0.00,
-    "konto_seit":"2000-01-21",
     "geburtsdatum":"1999-01-21",
     "adresse":"Die gute Adresse",
     "vorname":"Felipe",

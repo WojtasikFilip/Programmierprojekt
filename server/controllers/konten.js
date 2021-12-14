@@ -1,6 +1,5 @@
 const asyncHandler = require('express-async-handler');
 const kontoFunctions = require('../model/konten.js');
-const kundenFunctions = require('../model/kunden.js');
 
 const getKonten = asyncHandler(async (req, res) => {
   res.status(200).json(await kontoFunctions.getKonten());
@@ -16,7 +15,7 @@ const getKonto = asyncHandler(async (req, res) => {
   }
 });
 
-const patchKonto = asyncHandler(async (req, res) => {
+const patchKonten = asyncHandler(async (req, res) => {
   const { kartennummer } = req.params;
   const rows = await kontoFunctions.getKonto(kartennummer);
   if (rows.length === 0) res.status(404).send(`Konto ${kartennummer} does not exist.`);
@@ -38,13 +37,14 @@ const deleteKonto = asyncHandler(async (req, res) => {
 });
 
 const addKonto = asyncHandler(async (req, res) => {
-  const kartennummer = kundenFunctions.getRandomNumber(1000000000, 9999999999);
-  const kundennummer = 265759500; // Kundennummer muss gehardcoded werden
+  const { kartennummer } = req.body;
+  // eslint-disable-next-line camelcase
+  const { fk_kundennummer } = req.body;
   const rows = await kontoFunctions.getKonto(kartennummer);
   if (rows.length > 0) {
     res.status(404).send(`Konto ${kartennummer} already exists.`);
   } else {
-    await kontoFunctions.addKonto(req.body, kartennummer, kundennummer);
+    await kontoFunctions.addKonto(req.body, kartennummer, fk_kundennummer);
     res.status(200).send(`Konto ${kartennummer} added.`);
   }
 });
@@ -52,7 +52,7 @@ const addKonto = asyncHandler(async (req, res) => {
 module.exports = {
   getKonten,
   getKonto,
-  patchKonto,
+  patchKonten,
   deleteKonto,
   addKonto,
 };

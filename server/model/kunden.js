@@ -30,10 +30,6 @@ async function deleteKunde(kundennummer) {
   await db.query('DELETE from kunden where kundennummer = $1', [kundennummer]);
 }
 
-function getRandomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
-}
-
 async function addKunde(k, kundennummer) {
   await db.query(
     'INSERT INTO kunden (kundennummer,geburtsdatum,adresse,vorname,nachname) values($1,$2,$3,$4,$5)',
@@ -41,4 +37,4 @@ async function addKunde(k, kundennummer) {
   );
 }
 
-module.exports = { getKunden, getKunde, getKundenKonten, patchKunde, deleteKunde, addKunde, getRandomNumber };
+module.exports = { getKunden, getKunde, getKundenKonten, patchKunde, deleteKunde, addKunde };
