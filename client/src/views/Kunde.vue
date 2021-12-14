@@ -7,34 +7,37 @@
           <v-expansion-panel-header>Konto: {{ k.kartennummer }}</v-expansion-panel-header>
 
           <v-expansion-panel-content>
-            <v-subheader>Person</v-subheader>
-            <v-divider class="mb-3"></v-divider>
+            <v-divider></v-divider>
 
-            <v-row>
+            <v-subheader>Person</v-subheader>
+
+            <v-row class="ml-5">
               <v-col cols="4"> Konto seit: {{ k.konto_seit.substring(0, 10) }} </v-col>
               <v-col cols="4"> Wohnort: {{ kunde.adresse }} </v-col>
             </v-row>
+            <v-divider></v-divider>
+
             <v-subheader>Konto Details</v-subheader>
-            <v-divider class="mb-3"></v-divider>
-            <v-row>
+            <v-row class="ml-5">
               <v-col cols="4">
-                Kontostand: <b>{{ k.kontostand }} €</b>
+                Kontostand: <b> {{ k.kontostand }} €</b>
               </v-col>
               <v-col cols="4"> IBAN: {{ k.iban }} </v-col>
             </v-row>
+            <v-divider></v-divider>
+
             <v-subheader>Konto Transaktionen</v-subheader>
-            <v-divider class="mb-5"></v-divider>
             <v-row class="text-center">
               <v-col cols="3">
                 <v-dialog transition="dialog-bottom-transition" width="600">
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn color="grey lighten-1" v-bind="attrs" v-on="on"
+                    <v-btn color="green darken-2 white--text" v-bind="attrs" v-on="on"
                       ><v-icon>mdi-cash-minus</v-icon></v-btn
                     >
                   </template>
                   <template v-slot:default="dialog">
                     <v-card>
-                      <v-toolbar color="primary" dark>Geld abheben</v-toolbar>
+                      <v-toolbar color="primary" dark class="text-h5">Geld abheben</v-toolbar>
                       <v-card-text class="text-center mt-5">
                         <v-row>
                           <v-col cols="6">
@@ -123,17 +126,18 @@
               <v-col cols="3">
                 <v-dialog transition="dialog-bottom-transition" width="600">
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn color="grey lighten-1" v-bind="attrs" v-on="on"
+                    <v-btn color="green darken-2 white--text" v-bind="attrs" v-on="on"
                       ><v-icon>mdi-cash-plus</v-icon></v-btn
                     >
                   </template>
                   <template v-slot:default="dialog">
                     <v-card>
-                      <v-toolbar color="primary" dark>Geld einzahlen</v-toolbar>
+                      <v-toolbar color="primary" dark class="text-h5">Geld einzahlen</v-toolbar>
                       <v-card-text class="text-center mt-5">
                         <v-text-field
                           hint="Betrag zum Einzahlen eingeben"
                           persistent-hint
+                          prepend-icon="mdi-cash-multiple"
                           v-model="einzahlung"
                           type="number"
                         ></v-text-field>
@@ -144,7 +148,7 @@
                           class="pa-3 mr-5"
                           color="teal"
                           :disabled="einzahlung <= 0"
-                          @click="geldEinzahlen(k)"
+                          @click="geldEinzahlen(k), (dialog.value = false)"
                           >Bestätigen</v-btn
                         >
                         <v-spacer></v-spacer>
@@ -153,6 +157,62 @@
                           color="red darken-2"
                           class="pa-3 mr-5"
                           @click="(dialog.value = false), (einzahlung = 0)"
+                          >Abbrechen</v-btn
+                        >
+                      </v-card-actions>
+                    </v-card>
+                  </template>
+                </v-dialog>
+              </v-col>
+
+              <v-col cols="3">
+                <v-dialog transition="dialog-bottom-transition" width="600">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn color="green darken-2 white--text" v-bind="attrs" v-on="on"
+                      ><v-icon>mdi-bank-transfer</v-icon></v-btn
+                    >
+                  </template>
+                  <template v-slot:default="dialog">
+                    <v-card>
+                      <v-toolbar color="primary" dark class="text-h5">Geld überweisen</v-toolbar>
+                      <v-card-text>
+                        <v-select
+                          v-model="selectKonto"
+                          :items="konten.map((el) => el.iban)"
+                          label="Select Konto"
+                          prepend-icon="mdi-account"
+                          required
+                        >
+                        </v-select>
+                        <v-text-field
+                          hint="Betrag zum Überweisen eingeben"
+                          persistent-hint
+                          v-model="überweisung"
+                          prepend-icon="mdi-cash-multiple"
+                          type="number"
+                        ></v-text-field>
+                      </v-card-text>
+                      <v-card-actions class="justify-end">
+                        <v-btn
+                          outlined
+                          color="teal"
+                          :disabled="überweisung <= 0 || Number(überweisung) > k.kontostand"
+                          class="pa-3 mr-5"
+                          @click="
+                            geldÜberweisen(k);
+                            dialog.value = false;
+                          "
+                          >Überweisen</v-btn
+                        >
+                        <v-spacer></v-spacer>
+
+                        <v-btn
+                          outlined
+                          color="red darken-2"
+                          @click="
+                            dialog.value = false;
+                            überweisung = 0;
+                          "
                           >Abbrechen</v-btn
                         >
                       </v-card-actions>
@@ -181,51 +241,6 @@
                         </v-card-text>
                       </div>
                       <v-card-actions class="justify-end">
-                        <v-btn text @click="dialog.value = false">Close</v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </template>
-                </v-dialog>
-              </v-col>
-              <v-col cols="3">
-                <v-dialog transition="dialog-bottom-transition" width="600">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn color="amber darken-3 white--text" v-bind="attrs" v-on="on"
-                      ><v-icon>mdi-bank-transfer</v-icon></v-btn
-                    >
-                  </template>
-                  <template v-slot:default="dialog">
-                    <v-card>
-                      <v-toolbar color="primary" dark class="text-h5">Geld überweisen</v-toolbar>
-                      <v-card-text>
-                        <v-select
-                          v-model="selectKonto"
-                          :items="konten.map((el) => el.iban)"
-                          label="Select Konto"
-                          prepend-icon="mdi-account"
-                          required
-                          persistent-hint
-                        >
-                        </v-select>
-                        <v-text-field
-                          hint="Betrag zum Überweisen eingeben"
-                          persistent-hint
-                          v-model="überweisung"
-                          type="number"
-                        ></v-text-field>
-                      </v-card-text>
-                      <v-card-actions class="justify-end">
-                        <v-btn
-                          outlined
-                          color="red darken-2"
-                          class="pa-3 mr-5"
-                          @click="
-                            geldÜberweisen(k);
-                            dialog.value = false;
-                          "
-                          >Überweisen</v-btn
-                        >
-                        <v-spacer></v-spacer>
                         <v-btn text @click="dialog.value = false">Close</v-btn>
                       </v-card-actions>
                     </v-card>
@@ -279,13 +294,22 @@ export default {
           kontostand: Number(konto.kontostand) + Number(this.überweisung),
         },
       });
+      await axios({
+        url: 'http://127.0.0.1:3000/konten/' + k.kartennummer,
+        method: 'PATCH',
+        contentType: 'application/json',
+        data: {
+          kontostand: Number(k.kontostand) - Number(this.überweisung),
+        },
+      });
       this.verlauf.push({
         datum: new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10),
         summe: Number(this.überweisung),
         kartennummer: k.kartennummer,
-        message: 'überwiesen',
+        message: `an ${konto.iban} überwiesen`,
       });
       localStorage.setItem('verlauf', JSON.stringify(this.verlauf));
+      this.überweisung = 0;
       this.getKundeKonten();
     },
     async getKundeKonten() {

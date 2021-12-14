@@ -53,10 +53,8 @@
                 <v-text-field
                   v-model="dateFormatted"
                   label="Geburtsdatum"
-                  hint="DD/MM/YYYY format"
                   readonly
                   prepend-icon="mdi-calendar-text"
-                  persistent-hint
                   v-bind="attrs"
                   @blur="date = parseDate(dateFormatted)"
                   v-on="on"
@@ -148,7 +146,7 @@ export default {
         (this.nachname = ''),
         (this.adresse = ''),
         (this.kundennummer = ''),
-        (this.date = '');
+        (this.date = null);
     },
     getRandomNumber(min, max) {
       this.kundennummer = Math.floor(Math.random() * (max - min) + min);

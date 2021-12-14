@@ -106,7 +106,6 @@ export default {
 
   methods: {
     async insertKonto() {
-      console.log(this.selectKunde);
       await axios({
         url: 'http://127.0.0.1:3000/konten',
         method: 'POST',
